@@ -1,7 +1,7 @@
 
 <div class="login-box">
   <div class="login-logo">
-    <a href="<?= base_url('auth'); ?>"><b>Admin</b>LTE</a>
+    <a href="<?= base_url('auth'); ?>">My<b>POS</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">

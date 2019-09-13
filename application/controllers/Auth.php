@@ -85,9 +85,10 @@ class Auth extends CI_Controller{
 		$this->load->view('auth/register');
 		$this->load->view('templates_auth/footer');
 		}else{
+			$email = $this->input->post('email');
 			$data = [
-				'name' => $this->input->post('name'),
-				'email' => $this->input->post('email'),
+				'name' => htmlspecialchars($this->input->post('name',true)),
+				'email' => htmlspecialchars($email),
 				'image' => 'default.jpg',
 				'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
 				'role_id' => 1,
