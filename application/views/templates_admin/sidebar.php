@@ -26,68 +26,51 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <li class="header">MAIN NAVIGATION</li>
-        <li >
-          <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+       
+        <?php 
+
+        $role_id = $this->session->userdata('role_id');
+        $queryMenu = "SELECT `user_menu`.`id`,`menu`
+            FROM `user_menu` JOIN `user_access_menu`
+              ON `user_menu`.`id` = `user_access_menu`.`menu_id`
+           WHERE `user_access_menu`.`role_id` = $role_id
+           ORDER BY `user_access_menu`.`menu_id` ASC
+          ";
+    $menu = $this->db->query($queryMenu)->result_array();
+         ?>
+
+    <?php foreach($menu as $m) : ?>
+       <li class="header"><?= $m['menu']; ?></li>
+
+       <?php 
+        $menuId = $m['id'];
+          $querySubMenu = "SELECT *
+                FROM `user_sub_menu` JOIN `user_menu`
+                  ON `user_sub_menu`.`menu_id` = `user_menu`.`id`
+               WHERE `user_sub_menu`.`menu_id` = $menuId
+               AND `user_sub_menu`.`is_active` = 1
+               ";
+      $subMenu = $this->db->query($querySubMenu)->result_array();
+         ?>
+         <?php foreach ($subMenu as $sm) : ?>
+          <?php if($title == $sm['title']) : ?>
+          <li class="nav-item active">
+          <?php else : ?>
+          <li class="nav-item">
+          <?php endif; ?>
+          <a href="<?= $sm['url']; ?>">
+            <i class="<?= $sm['icon']; ?>"></i> <span><?= $sm['title']; ?></span>
             <span class="pull-right-container">
              
             </span>
           </a>
           
         </li>
+         <?php endforeach; ?>
+      <?php endforeach; ?>
         <li >
-          <a href="#">
-            <i class="fa fa-truck"></i>
-            <span>suppliers</span>
-            <span class="pull-right-container">
-              
-            </span>
-          </a>
-      </li>
-          
-        <li>
-          <a href="../widgets.html">
-            <i class="fa fa-shopping-bag"></i> <span>product</span>
-            <span class="pull-right-container">
-              
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class="fa fa-pie-chart"></i>
-            <span>Laporan</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          
-        </li>
-        
-        <li>
-          <a href="#">
-            <i class="fa fa-edit"></i> <span>Forms</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          
-        </li>
-        
-        <li>
-          <a href="../calendar.html">
-            <i class="fa fa-calendar"></i> <span>Calendar</span>
-            <span class="pull-right-container">
-              <small class="label pull-right bg-red">3</small>
-              <small class="label pull-right bg-blue">17</small>
-            </span>
-          </a>
-        </li>
-        
-        <li >
-          <a href="#">
-            <i class="fa fa-folder"></i> <span>Examples</span>
+          <a href="<?= base_url('admin/user'); ?>">
+            <i class="fa fa-user"></i> <span>User</span>
             <span class="pull-right-container">
              
             </span>
